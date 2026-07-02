@@ -1,55 +1,50 @@
 
-// script.js - Interatividades do Blog
 
-document.addEventListener("DOMContentLoaded", () => {
-    
-    // 1. Efeito Dinâmico no Header ao rolar a página
-    const header = document.querySelector("header");
-    
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 20) {
-            // Quando rolar para baixo, adiciona uma borda sutil e aumenta o efeito de desfoque
-            header.classList.add("shadow-xs", "border-indigo-100/50");
-            header.classList.remove("border-slate-100");
-        } else {
-            // Volta ao estado original no topo
-            header.classList.remove("shadow-xs", "border-indigo-100/50");
-            header.classList.add("border-slate-100");
+    // 4. Sistema de Curtidas (Like System) com persistência local
+    const likeButtons = document.querySelectorAll(".like-btn");
+
+    likeButtons.forEach((btn, index) => {
+        const countSpan = btn.querySelector(".like-count");
+        const iconSpan = btn.querySelector(".like-icon");
+        const storageKey = `blog_post_liked_${index}`;
+
+        // Verifica se o usuário já curtiu este post anteriormente
+        let hasLiked = localStorage.getItem(storageKey) === "true";
+        let currentLikes = parseInt(countSpan.innerText) || 0;
+
+        // Se já curtiu, atualiza o visual para o estado ativo
+        if (hasLiked) {
+            iconSpan.innerText = "❤️";
+            btn.classList.add("text-rose-500", "font-bold");
+            btn.classList.remove("text-slate-400");
         }
-    });
 
-    // 2. Interatividade do Botão de Newsletter
-    // Procura pelo botão com o texto de assinatura
-    const newsletterBtn = document.querySelector("header a:last-child");
-
-    if (newsletterBtn) {
-        newsletterBtn.addEventListener("click", (event) => {
-            event.preventDefault(); // Evita que a página recarregue
-            
-            const email = prompt("Digite seu melhor e-mail para receber os insights do amanhã:");
-            
-            if (email) {
-                // Validação super simples de formato de e-mail
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                
-                if (emailRegex.test(email)) {
-                    alert(`🚀 Excelente escolha! O e-mail (${email}) foi inserido na nossa lista de transmissão para o futuro.`);
-                } else {
-                    alert("❌ Hum, esse formato de e-mail parece incorreto. Tente novamente!");
-                }
-            }
-        });
-    }
-
-    // 3. Simulação de cliques nos artigos do Feed
-    const articleLinks = document.querySelectorAll("article h1 a, article h3 a");
-    
-    articleLinks.forEach(link => {
-        link.addEventListener("click", (event) => {
+        btn.addEventListener("click", (event) => {
             event.preventDefault();
-            const tituloArtigo = link.innerText;
-            console.log(`[Blog Log]: Navegando para o artigo -> ${tituloArtigo}`);
-            alert(`🔗 Conexão estabelecida! Você seria redirecionado para a página dedicada do artigo:\n"${tituloArtigo}"`);
+            event.stopPropagation(); // Evita disparar o clique do card
+
+            if (hasLiked) {
+                // Descurtir
+                currentLikes--;
+                hasLiked = false;
+                iconSpan.innerText = "🤍";
+                btn.classList.remove("text-rose-500", "font-bold");
+                btn.classList.add("text-slate-400");
+            } else {
+                // Curtir
+                currentLikes++;
+                hasLiked = true;
+                iconSpan.innerText = "❤️";
+                btn.classList.add("text-rose-500", "font-bold");
+                btn.classList.remove("text-slate-400");
+
+                // Animação rápida de pulso no clique
+                btn.classList.add("scale-110");
+                setTimeout(() => btn.classList.remove("scale-110"), 150);
+            }
+
+            // Atualiza o texto e salva o estado no navegador
+            countSpan.innerText = currentLikes;
+            localStorage.setItem(storageKey, hasLiked);
         });
     });
-});
