@@ -1,56 +1,105 @@
-/* style.css - Customizações Estéticas do Futuro */
+/* Rolagem suave */
 
-/* Comportamento de rolagem suave na página */
 html {
     scroll-behavior: smooth;
 }
 
-/* Customização da barra de rolagem (Scrollbar) bem minimalista */
+
+
+/* Barra de rolagem */
+
 ::-webkit-scrollbar {
-    width: 6px;
+
+    width: 8px;
+
 }
+
 
 ::-webkit-scrollbar-track {
-    background: #f1f5f9; /* Cor slate-100 do Tailwind */
+
+    background: #f1f5f9;
+
 }
+
 
 ::-webkit-scrollbar-thumb {
-    background: #cbd5e1; /* Cor slate-300 */
-    border-radius: 10px;
+
+    background: #cbd5e1;
+
+    border-radius: 20px;
+
 }
+
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #6366f1; /* Indigo-500 (Destaque do Blog) */
+
+    background:#6366f1;
+
 }
 
-/* Efeito de seleção de texto personalizado */
+
+
+/* Seleção de texto */
+
 ::selection {
-    background-color: rgba(99, 102, 241, 0.2);
-    color: #4f46e5;
+
+    background:rgba(99,102,241,.2);
+
+    color:#4f46e5;
+
 }
 
-/* Classe utilitária extra: Efeito de brilho neon suave ao passar o mouse */
-.glow-effect {
-    transition: all 0.3s ease-in-out;
-}
 
-.glow-effect:hover {
-    box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
-    border-color: rgba(99, 102, 241, 0.3);
-}
 
-/* Animação para surgimento suave do Modal de Informações */
+/* Animação do modal */
+
 .animate-scale-up {
-    animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    animation: scaleUp .25s ease forwards;
+
 }
+
+
 
 @keyframes scaleUp {
-    from {
-        transform: scale(0.95);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
+
+
+from {
+
+    transform:scale(.95);
+
+    opacity:0;
+
+}
+
+
+
+to {
+
+    transform:scale(1);
+
+    opacity:1;
+
+}
+
+
+}
+
+
+
+/* Efeito extra nas imagens */
+
+.clickable-img {
+
+    cursor:pointer;
+
+    transition:transform .5s ease;
+
+}
+
+
+.clickable-img:hover {
+
+    transform:scale(1.05);
+
 }
